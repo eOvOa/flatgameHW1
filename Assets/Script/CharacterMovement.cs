@@ -5,11 +5,23 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     public float speed;
+    private Animator animator;
+    private SpriteRenderer sprite;
+    private AudioSource stepAudio;
+
+
+    public AudioSource streamAudio;
+    public AudioSource birdAudio;
+    public AudioSource cowAudio;
+
+    public SpriteRenderer dialogue;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        animator = this.GetComponent<Animator>();
+        sprite = this.GetComponent<SpriteRenderer>();
+        stepAudio = this.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -20,14 +32,25 @@ public class CharacterMovement : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.D))
             {
+                sprite.flipX = false;
+                animator.SetBool("IsWalk", true);
+                stepAudio.Play();
                 vel += new Vector3(speed, 0, 0);
                 transform.position += vel;
             }
-            if (Input.GetKey(KeyCode.A))
+            else if (Input.GetKey(KeyCode.A))
             {
+                animator.SetBool("IsWalk", true);
+                sprite.flipX = true;
+                stepAudio.Play();
                 vel -= new Vector3(speed, 0, 0);
                 transform.position += vel;
-            }        
+            }
+            else
+            {
+                animator.SetBool("IsWalk", false);
+                stepAudio.Stop();
+            }
         }
 
         if (transform.position.x < -14.83){
